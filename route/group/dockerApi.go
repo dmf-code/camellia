@@ -3,6 +3,7 @@ package group
 import (
 	"camellia/internal/dockerfile/application/service"
 	"camellia/internal/dockerfile/domain/php/entity"
+	"camellia/internal/dockerfile/infrastructure/util"
 	"context"
 	"fmt"
 	"github.com/docker/docker/api/types"
@@ -13,12 +14,10 @@ import (
 	"os"
 )
 
-func Ps(ctx *gin.Context)  {
+func ContainerList(ctx *gin.Context)  {
 	bg := context.Background()
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		panic(err)
-	}
+
+	cli := util.NewDockerApi()
 
 	containers, err := cli.ContainerList(bg, types.ContainerListOptions{})
 	if err != nil {

@@ -3,6 +3,7 @@ package service
 import (
 	"camellia/internal/dockerfile/domain/php/entity"
 	"camellia/internal/dockerfile/domain/php/service"
+	"camellia/tool/exception"
 	"context"
 	"fmt"
 	"github.com/docker/docker/api/types"
@@ -13,30 +14,37 @@ import (
 	"time"
 )
 
-type PHPService struct {
-	PHPDomainService service.PHPDomainService
+type DockerService struct {
+	DockerDomainService service.DockerDomainService
 }
 
 // 构建 dockerfile 文件
-func (srv *PHPService) Build(dockerfile *entity.Dockerfile) {
+func (srv *DockerService) Build(dockerfile *entity.Dockerfile) {
 
 	path, _ := os.Getwd()
-	fmt.Println(path)
-	srv.PHPDomainService.ReadDockerfile(path+"/template/php/Dockerfile")
+
+	srv.DockerDomainService.ReadDockerfile(path+"/template/php/Dockerfile")
 
 	bg := context.Background()
 
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		panic(err)
-	}
+	exception.GetIns().Throw(err)
 
 	// tar 文件创建
 	tar := new(archivex.TarFile)
-	tar.Create(path+"/template/archieve")
-	tar.AddAll(path+"/template/php", false)
-	tar.Close()
+
+	err = tar.Create(path+"/template/archieve")
+	exception.GetIns().Throw(err)
+
+	err = tar.AddAll(path+"/template/php", false)
+	exception.GetIns().Throw(err)
+
+	err = tar.Close()
+	exception.GetIns().Throw(err)
+
 	dockerBuildContext, err := os.Open(path+"/template/archieve")
+	exception.GetIns().Throw(err)
+
 	defer dockerBuildContext.Close()
 
 	options := types.ImageBuildOptions{
@@ -51,11 +59,7 @@ func (srv *PHPService) Build(dockerfile *entity.Dockerfile) {
 
 	buildResponse, err := cli.ImageBuild(bg, dockerBuildContext, options)
 
-	if err != nil {
-		fmt.Println("error")
-		fmt.Printf("%s", err.Error())
-		return
-	}
+	exception.GetIns().Throw(err)
 
 	defer buildResponse.Body.Close()
 
@@ -68,5 +72,9 @@ func (srv *PHPService) Build(dockerfile *entity.Dockerfile) {
 	fmt.Println(string(response))
 
 	return
+}
+
+func (srv *DockerService) Run() {
+
 }
 

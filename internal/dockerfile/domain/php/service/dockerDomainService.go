@@ -4,12 +4,12 @@ import (
 	"os"
 )
 
-type PHPDomainService struct {
+type DockerDomainService struct {
 	ArgStr     string
 	Dockerfile string
 }
 
-func (srv *PHPDomainService) ReadDockerfile(path string) {
+func (srv *DockerDomainService) ReadDockerfile(path string) {
 	file, _ := os.Open(path)
 	defer file.Close()
 }
