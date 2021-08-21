@@ -36,11 +36,12 @@ func New() *Exception {
 // 异常抛出
 func (e *Exception) Throw(err error) {
 
-	if e.debug == true {
-		fmt.Println(err.Error())
-	}
-
 	if err != nil {
+
+		if e.debug == true {
+			fmt.Println(err.Error())
+		}
+
 		panic(err)
 	}
 }

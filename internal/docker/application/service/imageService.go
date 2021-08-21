@@ -1,39 +1,33 @@
 package service
 
 import (
-	"camellia/internal/dockerfile/domain/php/entity"
-	"camellia/internal/dockerfile/domain/php/service"
+	"camellia/internal/docker/domain/php/entity"
+	"camellia/internal/docker/infrastructure/util"
 	"camellia/tool/exception"
 	"context"
 	"fmt"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
 	"github.com/jhoonb/archivex"
 	"io/ioutil"
 	"os"
-	"time"
 )
 
-type DockerService struct {
-	DockerDomainService service.DockerDomainService
+type ImageService struct {
 }
 
 // 构建 dockerfile 文件
-func (srv *DockerService) Build(dockerfile *entity.Dockerfile) {
+func (srv *ImageService) Build(dockerfile *entity.Dockerfile) {
 
 	path, _ := os.Getwd()
 
-	srv.DockerDomainService.ReadDockerfile(path+"/template/php/Dockerfile")
-
 	bg := context.Background()
 
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	exception.GetIns().Throw(err)
+	cli := util.NewDockerApi()
 
 	// tar 文件创建
 	tar := new(archivex.TarFile)
 
-	err = tar.Create(path+"/template/archieve")
+	err := tar.Create(path+"/template/archieve")
 	exception.GetIns().Throw(err)
 
 	err = tar.AddAll(path+"/template/php", false)
@@ -63,7 +57,6 @@ func (srv *DockerService) Build(dockerfile *entity.Dockerfile) {
 
 	defer buildResponse.Body.Close()
 
-	time.Sleep(5000 * time.Millisecond)
 	fmt.Printf("********* %s **********\n", buildResponse.OSType)
 	response, err := ioutil.ReadAll(buildResponse.Body)
 	if err != nil {
@@ -74,7 +67,4 @@ func (srv *DockerService) Build(dockerfile *entity.Dockerfile) {
 	return
 }
 
-func (srv *DockerService) Run() {
-
-}
 

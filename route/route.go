@@ -1,17 +1,25 @@
 package route
 
 import (
-	"camellia/route/group"
+	"camellia/internal/docker/application/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() (e *gin.Engine, err error) {
 	r := gin.Default()
-	docker := r.Group("/docker")
+
+	container := r.Group("/container")
 	{
-		docker.GET("/ps", group.ContainerList)
-		docker.POST("/run", group.Run)
-		docker.POST("/build", group.ImageBuild)
+		containerController := controller.ContainerController{}
+		container.GET("/list", containerController.List)
+		container.POST("/new", containerController.NewContainer)
 	}
+
+	image := r.Group("/image")
+	{
+		imageController := controller.ImageController{}
+		image.POST("/build", imageController.Build)
+	}
+
 	return r, nil
 }
