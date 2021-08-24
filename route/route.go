@@ -11,8 +11,11 @@ func SetupRouter() (e *gin.Engine, err error) {
 	container := r.Group("/container")
 	{
 		containerController := controller.ContainerController{}
-		container.GET("/list", containerController.List)
-		container.POST("/new", containerController.NewContainer)
+		container.GET("list", containerController.List)
+		container.POST("new", containerController.NewContainer)
+		container.GET("stop", containerController.Stop)
+		container.GET("start", containerController.Start)
+		container.GET("remove", containerController.Remove)
 	}
 
 	image := r.Group("/image")

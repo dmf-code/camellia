@@ -9,7 +9,7 @@ import (
 type ImageController struct {
 }
 
-func (ctr *ImageController) Build(ctx *gin.Context) {
+func (ctrl *ImageController) Build(ctx *gin.Context) {
 	srv := service.ImageService{}
 
 	srv.Build(entity.New())

@@ -39,6 +39,7 @@ func (e *Exception) Throw(err error) {
 	if err != nil {
 
 		if e.debug == true {
+			fmt.Println(err)
 			fmt.Println(err.Error())
 		}
 

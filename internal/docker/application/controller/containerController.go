@@ -2,6 +2,7 @@ package controller
 
 import (
 	"camellia/internal/docker/application/service"
+	"camellia/internal/docker/interfaces/assembler"
 	resp "camellia/tool/response"
 	"github.com/gin-gonic/gin"
 )
@@ -9,14 +10,35 @@ import (
 type ContainerController struct {
 }
 
-func (ctr *ContainerController) List(ctx *gin.Context) {
+func (ctrl *ContainerController) List(ctx *gin.Context) {
 	containerService := service.ContainerService{}
 	list := containerService.List()
 
 	resp.Success(ctx, "ok", list)
 }
 
-func (ctr *ContainerController) NewContainer(ctx *gin.Context) {
+func (ctrl *ContainerController) NewContainer(ctx *gin.Context) {
 	containerService := service.ContainerService{}
 	containerService.New()
+}
+
+func (ctrl *ContainerController) Stop(ctx *gin.Context) {
+	containerService := service.ContainerService{}
+
+	containerService.Stop()
+}
+
+func (ctrl *ContainerController) Start(ctx *gin.Context) {
+	containerService := service.ContainerService{}
+
+	containerService.Start()
+}
+
+func (ctrl *ContainerController) Remove(ctx *gin.Context) {
+
+	dto := assembler.ToContainerDTO(ctx)
+
+	containerService := service.ContainerService{}
+
+	containerService.Remove(dto)
 }

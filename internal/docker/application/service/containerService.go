@@ -2,6 +2,7 @@ package service
 
 import (
 	"camellia/internal/docker/infrastructure/util"
+	"camellia/internal/docker/interfaces/dto"
 	"camellia/tool/exception"
 	"context"
 	"fmt"
@@ -9,7 +10,6 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
-	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 type ContainerService struct {
@@ -71,8 +71,12 @@ func (srv *ContainerService) New() {
 		Shell:           nil,
 	}
 
+	var binds []string
+
+	binds = []string{"/work/apps/php/learnku://var/www/html"}
+
 	hostConfig := container.HostConfig{
-		Binds:           nil,
+		Binds:           binds,
 		ContainerIDFile: "",
 		LogConfig:       container.LogConfig{},
 		NetworkMode:     "",
@@ -116,28 +120,69 @@ func (srv *ContainerService) New() {
 
 	netWorkingConfig := network.NetworkingConfig{}
 
-	platform := v1.Platform{
-		Architecture: "",
-		OS:           "",
-		OSVersion:    "",
-		OSFeatures:   nil,
-		Variant:      "",
-	}
+	//platform := v1.Platform{
+	//	Architecture: "",
+	//	OS:           "",
+	//	OSVersion:    "",
+	//	OSFeatures:   nil,
+	//	Variant:      "",
+	//}
 
 	containerName := "test"
+
 	body, err := cli.ContainerCreate(
 		bg,
 		&config,
 		&hostConfig,
 		&netWorkingConfig,
-		&platform,
+		nil,
 		containerName)
-
-	exception.GetIns().Throw(err)
 
 	fmt.Println(body)
 
+	exception.GetIns().Throw(err)
+
 	err = cli.ContainerStart(bg, body.ID, types.ContainerStartOptions{})
+
+	exception.GetIns().Throw(err)
+}
+
+func (srv *ContainerService) Stop() {
+	cli := util.NewDockerApi()
+	bg := context.Background()
+	err := cli.ContainerStop(
+		bg,
+		"ca4d386aa7fc8cd99032a9a29d8a094141c6a9a274c64b52f2b8c55fb55407f9",
+		nil)
+
+	exception.GetIns().Throw(err)
+
+}
+
+func (srv *ContainerService) Start() {
+	cli := util.NewDockerApi()
+	bg := context.Background()
+	err := cli.ContainerStart(
+		bg,
+		"ca4d386aa7fc8cd99032a9a29d8a094141c6a9a274c64b52f2b8c55fb55407f9",
+		types.ContainerStartOptions{
+			CheckpointID:  "",
+			CheckpointDir: "",
+		})
+
+	exception.GetIns().Throw(err)
+}
+
+func (srv *ContainerService) Remove(dto *dto.ContainerDTO) {
+	cli := util.NewDockerApi()
+	bg := context.Background()
+
+	err := cli.ContainerRemove(
+		bg,
+		dto.Id,
+		types.ContainerRemoveOptions{
+			Force:         true,
+		})
 
 	exception.GetIns().Throw(err)
 }
