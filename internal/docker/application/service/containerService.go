@@ -73,7 +73,7 @@ func (srv *ContainerService) New() {
 
 	var binds []string
 
-	binds = []string{"/work/apps/php/learnku://var/www/html"}
+	binds = []string{"/work/apps/php/learnku:/var/www/html"}
 
 	hostConfig := container.HostConfig{
 		Binds:           binds,
@@ -147,24 +147,25 @@ func (srv *ContainerService) New() {
 	exception.GetIns().Throw(err)
 }
 
-func (srv *ContainerService) Stop() {
+func (srv *ContainerService) Stop(dto *dto.ContainerDTO) {
 	cli := util.NewDockerApi()
 	bg := context.Background()
 	err := cli.ContainerStop(
 		bg,
-		"ca4d386aa7fc8cd99032a9a29d8a094141c6a9a274c64b52f2b8c55fb55407f9",
+		dto.Id,
 		nil)
 
 	exception.GetIns().Throw(err)
 
 }
 
-func (srv *ContainerService) Start() {
+func (srv *ContainerService) Start(dto *dto.ContainerDTO) {
+
 	cli := util.NewDockerApi()
 	bg := context.Background()
 	err := cli.ContainerStart(
 		bg,
-		"ca4d386aa7fc8cd99032a9a29d8a094141c6a9a274c64b52f2b8c55fb55407f9",
+		dto.Id,
 		types.ContainerStartOptions{
 			CheckpointID:  "",
 			CheckpointDir: "",

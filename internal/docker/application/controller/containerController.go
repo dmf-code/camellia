@@ -23,15 +23,18 @@ func (ctrl *ContainerController) NewContainer(ctx *gin.Context) {
 }
 
 func (ctrl *ContainerController) Stop(ctx *gin.Context) {
+	dto := assembler.ToContainerDTO(ctx)
 	containerService := service.ContainerService{}
 
-	containerService.Stop()
+	containerService.Stop(dto)
 }
 
 func (ctrl *ContainerController) Start(ctx *gin.Context) {
+
+	dto := assembler.ToContainerDTO(ctx)
 	containerService := service.ContainerService{}
 
-	containerService.Start()
+	containerService.Start(dto)
 }
 
 func (ctrl *ContainerController) Remove(ctx *gin.Context) {
