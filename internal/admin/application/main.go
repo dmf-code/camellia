@@ -1,11 +1,8 @@
 package main
 
 import (
-	"camellia/cmd"
-	"camellia/internal/admin/application/bootstrap"
 	"camellia/internal/admin/application/route"
 	"camellia/tool/logObj"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"io"
@@ -24,22 +21,22 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	if len(os.Args) > 1 {
-
-		if os.Args[1] == "Migration" {
-
-			// 迁移数据
-			bootstrap.InitTable()
-
-			err = cmd.MigrationCmd.Execute()
-
-			if err != nil {
-				fmt.Println(err)
-			}
-		}
-
-		return
-	}
+	//if len(os.Args) > 1 {
+	//
+	//	if os.Args[1] == "Migration" {
+	//
+	//		// 迁移数据
+	//		bootstrap.InitTable()
+	//
+	//		err = cmd.MigrationCmd.Execute()
+	//
+	//		if err != nil {
+	//			fmt.Println(err)
+	//		}
+	//	}
+	//
+	//	return
+	//}
 
 	// 初始化日志
 	logObj.InitLogger()
@@ -48,7 +45,7 @@ func main() {
 	logObj.SugarLogger.Infof("aaaaaaaaaaaa %d", 1)
 
 	// 权限初始化
-	permission.Init()
+	//permission.Init()
 
 	r, err := route.SetupRouter()
 
