@@ -1,7 +1,6 @@
 package route
 
 import (
-	"camellia/internal/admin/application/middleware"
 	resp "camellia/tool/response"
 	"github.com/gin-gonic/gin"
 )
@@ -15,16 +14,16 @@ func SetupRouter() (e *gin.Engine, err error) {
 	front := r.Group("/front")
 	{
 		front.GET("ping", func(context *gin.Context) {
-			resp.Success(context, "pong")
+			resp.Success(context, resp.Ok, "pong")
 		})
 
 	}
 
 	backend := r.Group("/backend")
-	backend.Use(middleware.AccessTokenMiddleware())
+	//backend.Use(middleware.AccessTokenMiddleware())
 	{
 		backend.GET("ping", func(context *gin.Context) {
-			resp.Success(context, "pong")
+			resp.Success(context, resp.Ok, "pong")
 		})
 		BackendGroup(backend)
 	}

@@ -15,8 +15,8 @@ func Error(ctx *gin.Context, code int, msg string, data ...interface{})  {
 	response(ctx, code, msg, data...)
 }
 
-func Success(ctx *gin.Context, msg string, data ...interface{})  {
-	response(ctx, 0, msg, data...)
+func Success(ctx *gin.Context, code int, msg string, data ...interface{})  {
+	response(ctx, code, msg, data...)
 }
 
 func Paginate(ctx *gin.Context, msg string, items interface{}, total int, page int, pageSize int) {

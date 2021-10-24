@@ -1,7 +1,11 @@
 package route
 
-import "github.com/gin-gonic/gin"
+import (
+	"camellia/internal/admin/application/service"
+	"github.com/gin-gonic/gin"
+)
 
 func BackendGroup(r *gin.RouterGroup) {
-	r.POST("/role/create")
+	roleApp := service.RoleApplicationService{}
+	r.POST("/role/create", roleApp.Create)
 }

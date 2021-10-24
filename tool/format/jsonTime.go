@@ -1,6 +1,7 @@
 package format
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"time"
 )
@@ -23,4 +24,21 @@ func (t *JSONTime) UnmarshalJSON(data []byte) (err error) {
 	now, err := time.ParseInLocation(`"`+TimeFormat+`"`, string(data), time.Local)
 	*t = JSONTime{now}
 	return
+}
+
+func (t JSONTime) Value() (driver.Value, error) {
+	var zeroTime time.Time
+	if t.Time.UnixNano() == zeroTime.UnixNano() {
+		return nil, nil
+	}
+	return t.Time, nil
+}
+
+func (t *JSONTime) Scan(v interface{}) error {
+	value, ok := v.(time.Time)
+	if ok {
+		*t = JSONTime{Time: value}
+		return nil
+	}
+	return fmt.Errorf("can not convert %v to timestamp", v)
 }

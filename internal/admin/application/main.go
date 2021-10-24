@@ -2,12 +2,14 @@ package main
 
 import (
 	"camellia/internal/admin/application/route"
+	"camellia/tool/database"
 	"camellia/tool/logObj"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -21,29 +23,26 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	//if len(os.Args) > 1 {
-	//
-	//	if os.Args[1] == "Migration" {
-	//
-	//		// 迁移数据
-	//		bootstrap.InitTable()
-	//
-	//		err = cmd.MigrationCmd.Execute()
-	//
-	//		if err != nil {
-	//			fmt.Println(err)
-	//		}
-	//	}
-	//
-	//	return
-	//}
-
 	// 初始化日志
 	logObj.InitLogger()
 	defer logObj.SugarLogger.Sync()
 
 	logObj.SugarLogger.Infof("aaaaaaaaaaaa %d", 1)
-
+	
+	
+	// 初始化数据库
+	database.InitMysql(&database.Config{
+		Addr:         "",
+		DSN:          "root:root@tcp(127.0.0.1:3306)/camellia?charset=utf8mb4&parseTime=True&loc=Local",
+		ReadDSN:      nil,
+		Active:       10,
+		Idle:         5,
+		IdleTimeout:  time.Duration(time.Minute),
+		QueryTimeout: time.Duration(time.Minute),
+		ExecTimeout:  time.Duration(time.Minute),
+		TranTimeout:  time.Duration(time.Minute),
+	})
+	
 	// 权限初始化
 	//permission.Init()
 
