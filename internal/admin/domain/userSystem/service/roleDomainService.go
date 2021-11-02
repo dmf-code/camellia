@@ -13,7 +13,7 @@ type RoleDomainService struct {
 
 func (srv *RoleDomainService) Create() error {
 	db := database.GetInstance()
-	rolePO := assembler.DTOToPO(&srv.RoleDTO)
+	rolePO := assembler.RoleDTOToPO(&srv.RoleDTO)
 	res := db.Table("role").Create(&rolePO)
 
 	if res.Error != nil {

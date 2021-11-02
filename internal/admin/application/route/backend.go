@@ -8,4 +8,7 @@ import (
 func BackendGroup(r *gin.RouterGroup) {
 	roleApp := service.RoleApplicationService{}
 	r.POST("/role/create", roleApp.Create)
+
+	userApp := service.UserApplicationService{}
+	r.GET("/user/login", userApp.Login)
 }

@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"camellia/internal/admin/domain/permission/repository/mapper"
+	"camellia/internal/admin/domain/userSystem/repository/mapper"
 	"camellia/internal/admin/domain/user/repository/po"
 )
 

@@ -7,23 +7,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RoleApplicationService struct {
+type UserApplicationService struct {
 }
 
-func (srv *RoleApplicationService) Create(c *gin.Context) {
-
-	roleDTO, err := assembler.RoleCreateToDTO(c)
+func (src *UserApplicationService) Login(c *gin.Context) {
+	userDTO, err := assembler.UserCreateToDTO(c)
 
 	if err != nil {
 		resp.Error(c, resp.ParameterError, err.Error())
 		return
 	}
 
-	roleDomainService := service.RoleDomainService{
-		RoleDTO: roleDTO,
+	userDomainService := service.UserDomainService{
+		UserDTO: userDTO,
 	}
 
-	err = roleDomainService.Create()
+	err = userDomainService.Login()
 
 	if err != nil {
 
@@ -34,3 +33,4 @@ func (srv *RoleApplicationService) Create(c *gin.Context) {
 
 	resp.Success(c, resp.Ok, resp.CodeText(resp.Ok))
 }
+

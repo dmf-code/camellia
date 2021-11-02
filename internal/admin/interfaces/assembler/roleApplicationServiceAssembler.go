@@ -1,7 +1,7 @@
 package assembler
 
 import (
-	"camellia/internal/admin/domain/permission/repository/po"
+	"camellia/internal/admin/domain/userSystem/repository/po"
 	"camellia/internal/admin/interfaces/dto"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -17,7 +17,7 @@ func RoleCreateToDTO(c *gin.Context) (dto.RoleDTO, error) {
 	return obj, nil
 }
 
-func DTOToPO(roleDTO *dto.RoleDTO) po.RolePO {
+func RoleDTOToPO(roleDTO *dto.RoleDTO) po.RolePO {
 	return po.RolePO{
 		Pid:                 roleDTO.Pid,
 		Name:                roleDTO.Name,

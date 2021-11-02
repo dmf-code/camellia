@@ -1,6 +1,6 @@
 package facade
 
-import "camellia/internal/admin/domain/permission/repository/po"
+import "camellia/internal/admin/domain/userSystem/repository/po"
 
 type RoleRepository interface {
 	Insert(rolePO po.RolePO)
