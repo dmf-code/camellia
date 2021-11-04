@@ -2,6 +2,7 @@ package main
 
 import (
 	"camellia/internal/admin/application/route"
+	"camellia/internal/admin/cmd"
 	"camellia/tool/database"
 	"camellia/tool/logObj"
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,6 @@ func main() {
 
 	logObj.SugarLogger.Infof("aaaaaaaaaaaa %d", 1)
 	
-	
 	// 初始化数据库
 	database.InitMysql(&database.Config{
 		Addr:         "",
@@ -42,7 +42,10 @@ func main() {
 		ExecTimeout:  time.Duration(time.Minute),
 		TranTimeout:  time.Duration(time.Minute),
 	})
-	
+
+
+	cmd.MigrationCmd.Execute()
+
 	// 权限初始化
 	//permission.Init()
 

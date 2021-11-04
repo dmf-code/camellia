@@ -11,4 +11,5 @@ func BackendGroup(r *gin.RouterGroup) {
 
 	userApp := service.UserApplicationService{}
 	r.GET("/user/login", userApp.Login)
+	r.POST("/user/register", userApp.Register)
 }

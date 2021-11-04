@@ -3,6 +3,8 @@ package database
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
+	"strings"
 	"sync"
 	"time"
 )
@@ -46,7 +48,13 @@ func connect(c *Config) (*gorm.DB, error) {
 		DontSupportRenameIndex: true, // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
 		DontSupportRenameColumn: true, // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix: "t_",   // 表名前缀，`User`表为`t_users`
+			SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user`
+			NameReplacer: strings.NewReplacer("CID", "Cid"), // 在转为数据库名称之前，使用NameReplacer更改结构/字段名称。
+		},
+	})
 
 	if err != nil {
 		return nil, err
@@ -62,6 +70,5 @@ func connect(c *Config) (*gorm.DB, error) {
 	sqlDB.SetMaxIdleConns(c.Active)
 	sqlDB.SetMaxIdleConns(c.Idle)
 	sqlDB.SetConnMaxLifetime(time.Duration(c.IdleTimeout))
-
 	return d, nil
 }
