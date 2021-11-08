@@ -7,11 +7,11 @@ import (
 	"fmt"
 )
 
-type RoleDomainService struct {
+type RoleDOService struct {
 	RoleDTO dto.RoleDTO
 }
 
-func (srv *RoleDomainService) Create() error {
+func (srv *RoleDOService) Create() error {
 	db := database.GetInstance()
 	rolePO := assembler.RoleDTOToPO(&srv.RoleDTO)
 	res := db.Table("role").Create(&rolePO)
