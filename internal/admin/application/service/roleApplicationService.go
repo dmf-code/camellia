@@ -19,16 +19,12 @@ func (srv *RoleApplicationService) Create(c *gin.Context) {
 		return
 	}
 
-	roleDomainService := service.RoleDomainService{
-		RoleDTO: roleDTO,
-	}
+	roleDomainService := service.NewRoleService(roleDTO)
 
 	err = roleDomainService.Create()
 
 	if err != nil {
-
 		resp.Error(c, resp.BadRequest, resp.CodeText(resp.BadRequest))
-
 		return
 	}
 

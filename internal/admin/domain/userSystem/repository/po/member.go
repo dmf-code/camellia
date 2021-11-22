@@ -15,3 +15,7 @@ type MemberPO struct {
 	Status int8 `gorm:"column:status;not null;default: 2;comment:状态 1:disable, 2:enable, 3:deleted;" json:"status" form:"status"`
 	field.TableTimeField
 }
+
+func (MemberPO) TableName() string {
+	return "member"
+}

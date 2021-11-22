@@ -50,7 +50,7 @@ func connect(c *Config) (*gorm.DB, error) {
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix: "t_",   // 表名前缀，`User`表为`t_users`
+			TablePrefix: "",   // 表名前缀，`User`表为`t_users`
 			SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user`
 			NameReplacer: strings.NewReplacer("CID", "Cid"), // 在转为数据库名称之前，使用NameReplacer更改结构/字段名称。
 		},

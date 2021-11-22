@@ -13,3 +13,7 @@ type RolePO struct {
 	Sequence uint64 `gorm:"column:sequence;not null;default: 5;comment:排序值" json:"sequence" form:"sequence"`
 	field.TableTimeField
 }
+
+func (RolePO) TableName() string {
+	return "role"
+}

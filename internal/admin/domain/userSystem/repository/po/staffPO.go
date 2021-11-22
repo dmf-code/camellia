@@ -13,3 +13,7 @@ type StaffPO struct {
 	Gender int8 `gorm:"column:gender;not null;default: 3;comment:员工性别: 1-男 2-女 3-未知;" json:"gender" form:"gender"`
 	field.TableTimeField
 }
+
+func (StaffPO) TableName() string {
+	return "staff"
+}

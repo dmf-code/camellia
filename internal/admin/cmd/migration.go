@@ -4,7 +4,6 @@ import (
 	"camellia/internal/admin/domain/userSystem/repository/po"
 	"camellia/tool/database"
 	"camellia/tool/exception"
-	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -17,33 +16,38 @@ var MigrationCmd = &cobra.Command{
 }
 
 func initTableData() {
+	var err error
 	db := database.GetInstance()
 
-	fmt.Println(db)
-
-	err := db.Migrator().AutoMigrate(&po.AccountPO{})
-	if err != nil {
+	if db.Migrator().HasTable("account") == false {
+		err = db.Migrator().AutoMigrate(&po.AccountPO{})
 		exception.GetIns().Throw(err)
 	}
 
-	err = db.Migrator().AutoMigrate(&po.MemberPO{})
-	if err != nil {
+	if db.Migrator().HasTable("account_platform") == false {
+		err = db.Migrator().AutoMigrate(&po.AccountPlatformPO{})
 		exception.GetIns().Throw(err)
 	}
 
-	err = db.Migrator().AutoMigrate(&po.RolePO{})
-	if err != nil {
+	if db.Migrator().HasTable("member") == false {
+		err = db.Migrator().AutoMigrate(&po.MemberPO{})
 		exception.GetIns().Throw(err)
 	}
 
-	err = db.Migrator().AutoMigrate(&po.StaffPO{})
-	if err != nil {
+	if db.Migrator().HasTable("role") == false {
+		err = db.Migrator().AutoMigrate(&po.RolePO{})
 		exception.GetIns().Throw(err)
 	}
 
-	err = db.Migrator().AutoMigrate(&po.TenantPO{})
-	if err != nil {
+	if db.Migrator().HasTable("staff") == false {
+		err = db.Migrator().AutoMigrate(&po.StaffPO{})
 		exception.GetIns().Throw(err)
 	}
+
+	if db.Migrator().HasTable("tenant") == false {
+		err = db.Migrator().AutoMigrate(&po.TenantPO{})
+		exception.GetIns().Throw(err)
+	}
+
 }
 

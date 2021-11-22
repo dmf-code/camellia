@@ -19,16 +19,12 @@ func (src *UserApplicationService) Login(c *gin.Context) {
 		return
 	}
 
-	userDomainService := service.UserDomainService{
-		UserDTO: userDTO,
-	}
+	userDomainService := service.NewUserService(userDTO)
 
 	err = userDomainService.Login()
 
 	if err != nil {
-
 		resp.Error(c, resp.BadRequest, resp.CodeText(resp.BadRequest))
-
 		return
 	}
 
@@ -44,16 +40,12 @@ func (src *UserApplicationService) Register(c *gin.Context) {
 		return
 	}
 
-	userDomainService := service.UserDomainService{
-		UserDTO: userDTO,
-	}
+	userDomainService := service.NewUserService(userDTO)
 
 	err = userDomainService.Register()
 
 	if err != nil {
-
 		resp.Error(c, resp.BadRequest, resp.CodeText(resp.BadRequest))
-
 		return
 	}
 

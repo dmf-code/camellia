@@ -7,3 +7,7 @@ type TenantPO struct {
 	Name string `gorm:"column:name;size:64;not null;comment:企业名称;index:idx_name,unique;" json:"name" form:"name"`
 	field.TableTimeField
 }
+
+func (TenantPO) TableName() string {
+	return "tenant"
+}

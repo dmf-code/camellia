@@ -17,8 +17,8 @@ func RoleCreateToDTO(c *gin.Context) (dto.RoleDTO, error) {
 	return obj, nil
 }
 
-func RoleDTOToPO(roleDTO *dto.RoleDTO) po.RolePO {
-	return po.RolePO{
+func RoleDTOToPO(roleDTO *dto.RoleDTO) *po.RolePO {
+	return &po.RolePO{
 		Pid:                 roleDTO.Pid,
 		Name:                roleDTO.Name,
 		Memo:                roleDTO.Memo,

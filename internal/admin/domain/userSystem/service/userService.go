@@ -5,16 +5,16 @@ import (
 	"camellia/tool/database"
 )
 
-type UserDOService struct {
+type UserService struct {
 	UserDTO dto.UserDTO
 }
 
-func (src *UserDOService) Login() error {
+func (src *UserService) Login() error {
 
 	return nil
 }
 
-func (src *UserDOService) Register() error {
+func (src *UserService) Register() error {
 
 	db := database.GetInstance()
 
